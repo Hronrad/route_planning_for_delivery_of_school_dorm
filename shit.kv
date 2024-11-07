@@ -1,0 +1,191 @@
+#:import Button kivy.uix.button.Button
+#:set lenth 1
+WindowManager:
+    LoginWindow:
+    FileChooserWindow:
+    ListWindow:
+    UsageWindow:
+
+<SelectableLabel>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: (.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+
+
+# <ListWindow>:
+#     name:"ListWindow"
+#     GridLayout:
+#         id:GridLayout3
+#         rows:2
+#         viewclass: 'SelectableLabel'
+#         SelectableRecycleBoxLayout:
+#             default_size: None, dp(56)
+#             default_size_hint: 1, None
+#             size_hint_y: None
+#             height: self.minimum_height
+#             orientation: 'vertical'
+#             multiselect: True
+#             touch_multiselect: True
+#         GridLayout:
+#             id:GridLayout31
+#             size_hint_y:None
+#             height:40
+#             cols:2
+#             Button:
+#                 text:"LIST"
+#                 on_release:
+#                     app.root.current='ListWindow'
+                    
+                
+            
+#             Button:
+#                 text:"NAVIG"
+#                 on_release:
+#                     app.pop()
+#                     # app.root.current='UsageWindow'
+#                     # root.manager.transition.direction="left"
+
+<LoginWindow>:
+    name:"LoginWindow"
+
+    GridLayout:
+        id:GridLayout1
+        cols:1
+        size:root.width,root.height
+
+        GridLayout:
+            cols:2
+            id:GridLayout11
+            Label:
+                text:"Name: "
+            
+            TextInput:
+                id:name
+                multiline:False
+            
+            Label:
+                text:"Telephone: "
+            
+            TextInput:
+                id:telephone
+                multiline:False
+
+            Label:
+                text:"BuildingNumber: "
+            
+            TextInput:
+                id:buildingnumber
+                multiline:False
+        
+        Button:
+            text:"Enter"
+            height:200
+            size_hint_y:None
+            on_release:app.root.current="FileChooserWindow" if (name.text and telephone.text and buildingnumber.text) else "LoginWindow"
+
+<FileChooserWindow>:
+    name:"FileChooserWindow"
+    FloatLayout:
+
+        Label:
+            text:"choose an excel file:"
+            pos_hint:{"top":1.42}
+
+        FileChooserListView:
+            id:filechooser
+            on_selection:root.open(filechooser.path,filechooser.selection);app.root.current="ListWindow"
+
+
+
+<P>:
+    Button:
+        id:checkbutton1
+        text:'NEXT'
+        size_hint:.3,.3
+        pos_hint:{'center_x':.5,'center_y':.3}
+        on_press:
+            app.update()
+            lenth=app.getValue('Len')
+            if app.getValue('Cur')<app.getValue('Len'):app.pop() 
+            if app.getValue('Cur')==999:app.dismis()
+
+
+
+# <UsageWindow>:
+#     name:"UsageWindow"
+#     GridLayout:
+#         id:GridLayout41
+#         rows:2
+#         FloatLayout:
+#             id:FloatLayout41
+#             Label:
+#                 id:room
+#                 text:app.getValue('Nroom')
+#                 pos_hint:{"y":.42}
+            
+#             Label:
+#                 id:num
+#                 text:app.getValue('Nnum')
+#                 pos_hint:{"y":.32}
+
+#             Button:
+#                 id:checkbutton
+#                 text:"START"
+#                 size_hint:.3,.3
+#                 pos_hint:{'center_x':.5,'center_y':.3}
+#                 on_press:app.update()
+
+#         GridLayout:
+#             id:GridLayout42
+#             size_hint_y:None
+#             height:40
+#             cols:2
+#             Button:
+#                 text:"LIST"
+#                 on_release:
+#                     app.root.current="ListWindow"
+#                     root.manager.transition.direction="right"
+#             Button:
+#                 text:"NAVIG"
+
+<ListWindow>:
+    on_pre_enter:self.refresh_recycleview;
+    name:"ListWindow"
+    BoxLayout:
+        orientation:'horizontal'
+        RV:
+            id:rv_id
+            viewclass: 'SelectableLabel'
+            
+            SelectableRecycleBoxLayout:
+                default_size: None, dp(36)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
+                multiselect: True
+                touch_multiselect: True
+
+    GridLayout:
+        id:GridLayout31
+        size_hint_y:None
+        height:40
+        cols:2
+        Button:
+            text:"LIST"
+            on_release:
+                app.root.current='ListWindow'
+
+        Button:
+            text:"NAVIG"
+            on_release:
+                app.pop()
+                # app.root.current='UsageWindow'
+                # root.manager.transition.direction="left"
+                
